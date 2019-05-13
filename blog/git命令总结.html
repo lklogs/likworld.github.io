@@ -85,7 +85,7 @@
 <meta property="og:site_name" content="lk&#39;logs">
 <meta property="og:description" content="本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击git-scm.com">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-13T03:48:43.250Z">
+<meta property="og:updated_time" content="2019-05-13T05:18:37.754Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git命令总结">
 <meta name="twitter:description" content="本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击git-scm.com">
@@ -319,8 +319,7 @@
       
 
       
-        <h2 id="本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击git-scm-com"><a href="#本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击git-scm-com" class="headerlink" title="本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击git-scm.com"></a>本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">git-scm.com</a></h2><a id="more"></a>
-<p>git config --list 查看所有git当时能找到的配置<br>git init 初始化<br>git add 添加需要上传的文件<br>git commit 提交<br>git commit -m “” 提交和提交信息<br>git commit -a 自动把所有已经跟踪过的文件暂存起来一并提交，跳过git add<br>git commit --amend 尝试重新提交<br>git clone [url] 克隆<br>git status 检查当前文件状态<br>git status -s 简要的文件状态信息<br>git status --short 简要的文件状态信息<br>cat [file] 查看文件内容<br>git diff 查看尚未暂存的文件更新了哪些内容<br>git diff --cached 查看已暂存的将要添加到下次提交里的内容<br>git diff --staged 效果与git diff –cached相同，但是在Git1.6.1及更高版本支持<br>git mv [original_name] [new_name] 修改文件名称<br>git log 回顾提交历史<br>git log -p -数字 显示最近几次修改的详细信息，便于代码审查<br>git log --stat 列出修改的文件数，以及行的移出和添加<br>git log --pretty= 不同于默认方式显示，参数有：online、short、full、fuller<br>git checkout –file.name 撤销对文件的修改<br>git remote 查看已经配置的远程仓库服务器<br>git remote -v 显示远程仓库的名称和地址<br>git remote add <shortname> <url> 添加一个新的远程Git仓库<br>git remote show [remote-name] 查看远程仓库的更多信息<br>git remote rename [original_name] [new_name] 修改一个远程仓库的简写名<br>git remote rm [name] 移除一个远程仓库<br>git fetch [remote-name] 访问远程仓库，从中拉取你还没有的数据<br>git fetch 更新你的远程仓库引用<br>git push [remote-name] [branch-name] 推送到远程仓库<br>git push origin [tagname] 显示地推送标签到共享服务器上<br>git tag 列出已有的标签<br>git tag -a [tag] -m [tag_message] 附注标签<br>git tag [tag] 轻量标签<br>git tag -a [tag] [提交历史id] 后期打标签<br>git tag -d [tag] 删除标签<br>git show [tag] 查看标签信息和对应的提交信息<br>git config --global alias.co checkout 设置检出的快捷键别名<br>git config --global alias.br branch 设置分支快捷键别名<br>git config --global alias.ci commit 设置提交快捷键别名<br>git config --global alias.st status 设置查看状态快捷键别名<br>git branch [tagName] 创建分支<br>git branch -d [tagName] 删除分支<br>git branch -v 查看每一个分支最后一次提交<br>git branch --merged 查看哪些分支已经合并到当前分支<br>git branch --no-merged 查看所有包含未合并工作的分支<br>git mergetool 打开一个可视化工具，调整冲突<br>git rebase [remote-name] 某一个分支的修改转移到另一个分支上<br>git rebase --onto [remote-name] [file1] [file2] 从一个特性分支里再分出一个特性分支的提交历史(选中在file2分支里但不在file1分支里的修改，将他们放在remote-name分支上重放)<br>git merge [file] 截取特性分支上的另一个特性分支，然后编辑到其他分支。与git checkout 配合使用</url></shortname></p>
+        <p>本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">git-scm.com</a><br><a id="more"></a><br>git config --list 查看所有git当时能找到的配置<br>git init 初始化<br>git add 添加需要上传的文件<br>git commit 提交<br>git commit -m “” 提交和提交信息<br>git commit -a 自动把所有已经跟踪过的文件暂存起来一并提交，跳过git add<br>git commit --amend 尝试重新提交<br>git clone [url] 克隆<br>git status 检查当前文件状态<br>git status -s 简要的文件状态信息<br>git status --short 简要的文件状态信息<br>cat [file] 查看文件内容<br>git diff 查看尚未暂存的文件更新了哪些内容<br>git diff --cached 查看已暂存的将要添加到下次提交里的内容<br>git diff --staged 效果与git diff –cached相同，但是在Git1.6.1及更高版本支持<br>git mv [original_name] [new_name] 修改文件名称<br>git log 回顾提交历史<br>git log -p -数字 显示最近几次修改的详细信息，便于代码审查<br>git log --stat 列出修改的文件数，以及行的移出和添加<br>git log --pretty= 不同于默认方式显示，参数有：online、short、full、fuller<br>git checkout –file.name 撤销对文件的修改<br>git remote 查看已经配置的远程仓库服务器<br>git remote -v 显示远程仓库的名称和地址<br>git remote add <shortname> <url> 添加一个新的远程Git仓库<br>git remote show [remote-name] 查看远程仓库的更多信息<br>git remote rename [original_name] [new_name] 修改一个远程仓库的简写名<br>git remote rm [name] 移除一个远程仓库<br>git fetch [remote-name] 访问远程仓库，从中拉取你还没有的数据<br>git fetch 更新你的远程仓库引用<br>git push [remote-name] [branch-name] 推送到远程仓库<br>git push origin [tagname] 显示地推送标签到共享服务器上<br>git tag 列出已有的标签<br>git tag -a [tag] -m [tag_message] 附注标签<br>git tag [tag] 轻量标签<br>git tag -a [tag] [提交历史id] 后期打标签<br>git tag -d [tag] 删除标签<br>git show [tag] 查看标签信息和对应的提交信息<br>git config --global alias.co checkout 设置检出的快捷键别名<br>git config --global alias.br branch 设置分支快捷键别名<br>git config --global alias.ci commit 设置提交快捷键别名<br>git config --global alias.st status 设置查看状态快捷键别名<br>git branch [tagName] 创建分支<br>git branch -d [tagName] 删除分支<br>git branch -v 查看每一个分支最后一次提交<br>git branch --merged 查看哪些分支已经合并到当前分支<br>git branch --no-merged 查看所有包含未合并工作的分支<br>git mergetool 打开一个可视化工具，调整冲突<br>git rebase [remote-name] 某一个分支的修改转移到另一个分支上<br>git rebase --onto [remote-name] [file1] [file2] 从一个特性分支里再分出一个特性分支的提交历史(选中在file2分支里但不在file1分支里的修改，将他们放在remote-name分支上重放)<br>git merge [file] 截取特性分支上的另一个特性分支，然后编辑到其他分支。与git checkout 配合使用</url></shortname></p>
 
       
     </div>
@@ -342,7 +341,7 @@
   <p><span>本文标题:</span>git命令总结</p>
   <p><span>文章作者:</span>江湖小郎中</p>
   <p><span>发布时间:</span>2019年05月13日 - 10:57:25</p>
-  <p><span>最后更新:</span>2019年05月13日 - 11:48:43</p>
+  <p><span>最后更新:</span>2019年05月13日 - 13:18:37</p>
   <p><span>原始链接:</span><a href="/blog/git命令总结.html" title="git命令总结">http://www.lklogs.com/blog/git命令总结.html</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://www.lklogs.com/blog/git命令总结.html" aria-label="复制成功！"></i></span>
   </p>
@@ -469,17 +468,8 @@ var jiathis_config={
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -539,22 +529,6 @@ var jiathis_config={
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击git-scm-com"><span class="nav-number">1.</span> <span class="nav-text">本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击git-scm.com</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
