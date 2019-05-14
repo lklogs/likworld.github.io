@@ -67,7 +67,7 @@
 
 
 
-  <meta name="keywords" content="Git,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -78,20 +78,14 @@
 
 
 
-<meta name="description" content="本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击git-scm.com">
-<meta name="keywords" content="Git">
-<meta property="og:type" content="article">
-<meta property="og:title" content="git命令总结">
-<meta property="og:url" content="http://www.lklogs.com/blog/git命令总结.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="分类">
+<meta property="og:url" content="http://www.lklogs.com/categories/index.html">
 <meta property="og:site_name" content="lk&#39;logs">
-<meta property="og:description" content="本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击git-scm.com">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://likworld.gitee.io/openiamge/Git.jpg">
-<meta property="og:updated_time" content="2019-05-14T07:38:07.822Z">
+<meta property="og:updated_time" content="2019-05-14T07:12:07.260Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="git命令总结">
-<meta name="twitter:description" content="本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击git-scm.com">
-<meta name="twitter:image" content="https://likworld.gitee.io/openiamge/Git.jpg">
+<meta name="twitter:title" content="分类">
 
 
 
@@ -121,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="http://www.lklogs.com/blog/git命令总结.html">
+  <link rel="canonical" href="http://www.lklogs.com/categories/">
 
 
 
 
 
-  <title>git命令总结 | lk'logs</title>
+  <title>分类 | lk'logs</title>
   
 
 
@@ -243,230 +237,40 @@
 
   <div id="posts" class="posts-expand">
     
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-categories" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.lklogs.com/blog/git命令总结.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="江湖小郎中">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/mylogo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="lk'logs">
-    </span>
-
     
+    
+    <div class="post-block page">
       <header class="post-header">
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">git命令总结</h1>
-        
+	<h1 class="post-title" itemprop="name headline">分类</h1>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-13T10:57:25+08:00">
-                2019-05-13
-              </time>
-            
 
-            
 
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">Git笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+</header>
 
       
       
-
       
-        <p><img src="https://likworld.gitee.io/openiamge/Git.jpg" alt>本文只作为个人笔记以及参照，如想了解更多详细的讲解，请点击<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">git-scm.com</a><br><a id="more"></a><br>git config --list 查看所有git当时能找到的配置<br>git init 初始化<br>git add 添加需要上传的文件<br>git commit 提交<br>git commit -m “” 提交和提交信息<br>git commit -a 自动把所有已经跟踪过的文件暂存起来一并提交，跳过git add<br>git commit --amend 尝试重新提交<br>git clone [url] 克隆<br>git status 检查当前文件状态<br>git status -s 简要的文件状态信息<br>git status --short 简要的文件状态信息<br>cat [file] 查看文件内容<br>git diff 查看尚未暂存的文件更新了哪些内容<br>git diff --cached 查看已暂存的将要添加到下次提交里的内容<br>git diff --staged 效果与git diff –cached相同，但是在Git1.6.1及更高版本支持<br>git mv [original_name] [new_name] 修改文件名称<br>git log 回顾提交历史<br>git log -p -数字 显示最近几次修改的详细信息，便于代码审查<br>git log --stat 列出修改的文件数，以及行的移出和添加<br>git log --pretty= 不同于默认方式显示，参数有：online、short、full、fuller<br>git checkout –file.name 撤销对文件的修改<br>git remote 查看已经配置的远程仓库服务器<br>git remote -v 显示远程仓库的名称和地址<br>git remote add <shortname> <url> 添加一个新的远程Git仓库<br>git remote show [remote-name] 查看远程仓库的更多信息<br>git remote rename [original_name] [new_name] 修改一个远程仓库的简写名<br>git remote rm [name] 移除一个远程仓库<br>git fetch [remote-name] 访问远程仓库，从中拉取你还没有的数据<br>git fetch 更新你的远程仓库引用<br>git push [remote-name] [branch-name] 推送到远程仓库<br>git push origin [tagname] 显示地推送标签到共享服务器上<br>git tag 列出已有的标签<br>git tag -a [tag] -m [tag_message] 附注标签<br>git tag [tag] 轻量标签<br>git tag -a [tag] [提交历史id] 后期打标签<br>git tag -d [tag] 删除标签<br>git show [tag] 查看标签信息和对应的提交信息<br>git config --global alias.co checkout 设置检出的快捷键别名<br>git config --global alias.br branch 设置分支快捷键别名<br>git config --global alias.ci commit 设置提交快捷键别名<br>git config --global alias.st status 设置查看状态快捷键别名<br>git branch [tagName] 创建分支<br>git branch -d [tagName] 删除分支<br>git branch -v 查看每一个分支最后一次提交<br>git branch --merged 查看哪些分支已经合并到当前分支<br>git branch --no-merged 查看所有包含未合并工作的分支<br>git mergetool 打开一个可视化工具，调整冲突<br>git rebase [remote-name] 某一个分支的修改转移到另一个分支上<br>git rebase --onto [remote-name] [file1] [file2] 从一个特性分支里再分出一个特性分支的提交历史(选中在file2分支里但不在file1分支里的修改，将他们放在remote-name分支上重放)<br>git merge [file] 截取特性分支上的另一个特性分支，然后编辑到其他分支。与git checkout 配合使用</url></shortname></p>
-
+      <div class="post-body">
+        
+        
+          <div class="category-all-page">
+            <div class="category-all-title">
+                1 category in total
+            </div>
+            <div class="category-all">
+              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Git笔记/">Git笔记</a><span class="category-list-count">1</span></li></ul>
+            </div>
+          </div>
+        
+      </div>
+      
+      
       
     </div>
     
     
     
-
-    
-      <div>
-        
-<div class="my_post_copyright">
-  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
-  
-  <!-- JS库 sweetalert 可修改路径 -->
-  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
-  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
-
-  <p><span>本文标题:</span>git命令总结</p>
-  <p><span>文章作者:</span>江湖小郎中</p>
-  <p><span>发布时间:</span>2019年05月13日 - 10:57:25</p>
-  <p><span>最后更新:</span>2019年05月14日 - 15:38:07</p>
-  <p><span>原始链接:</span><a href="/blog/git命令总结.html" title="git命令总结">http://www.lklogs.com/blog/git命令总结.html</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://www.lklogs.com/blog/git命令总结.html" aria-label="复制成功！"></i></span>
-  </p>
-  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
-</div>
-<script> 
-    var clipboard = new Clipboard('.fa-clipboard');
-    clipboard.on('success', $(function(){
-      $(".fa-clipboard").click(function(){
-        swal({   
-          title: "",   
-          text: '复制成功',   
-          html: false,
-          timer: 500,   
-          showConfirmButton: false
-        });
-      });
-    }));  
-</script>
-
-      </div>
-    
-
-    
-
-    
-      <div>
-        <ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>Post author:</strong>
-    江湖小郎中
-  </li>
-  <li class="post-copyright-link">
-    <strong>Post link:</strong>
-    <a href="http://www.lklogs.com/blog/git命令总结.html" title="git命令总结">http://www.lklogs.com/blog/git命令总结.html</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>Copyright Notice: </strong>
-    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
-  </li>
-</ul>
-
-      </div>
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Git/" rel="tag"># Git</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-        <!-- JiaThis Button BEGIN -->
-<!--<div class="jiathis_style">
-<span class="jiathis_txt">分享到：</span>
-<a class="jiathis_button_fav">收藏夹</a>
-<a class="jiathis_button_copy">复制网址</a>
-<a class="jiathis_button_email">邮件</a>
-<a class="jiathis_button_weixin">微信</a>
-<a class="jiathis_button_qzone">QQ空间</a>
-<a class="jiathis_button_tqq">腾讯微博</a>
-<a class="jiathis_button_douban">豆瓣</a>
-<a class="jiathis_button_share">一键分享</a>
-
-<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
-<a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" >
-var jiathis_config={
-  data_track_clickback:true,
-  summary:"",
-  shortUrl:false,
-  hideMore:false
-}
-</script>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>-->
-<!-- JiaThis Button END -->
-      
-    </div>
   </div>
 
 
@@ -475,10 +279,6 @@ var jiathis_config={
 
 
           
-
-  
-
-
 
         </div>
         
