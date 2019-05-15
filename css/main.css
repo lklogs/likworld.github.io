@@ -1883,7 +1883,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ffff28;
+  background: #ffbde3;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3073,4 +3073,12 @@ pre {
 code,
 pre {
   border: 1px solid #d6d6d6;
+}
+@font-face {
+  font-family: Lloyd2011;
+  src: url("/fonts/Lloyd2011.ttf");
+}
+.site-title {
+  font-size: 40px !important;
+  font-family: 'Lloyd2011' !important;
 }
