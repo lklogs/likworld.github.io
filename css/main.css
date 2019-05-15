@@ -1883,7 +1883,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #95c9b0;
+  background: #ffa6ff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3059,7 +3059,7 @@ pre .javascript .function {
   -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
 }
 body {
-  background: url("https://likworld.gitee.io/openiamge/background/background.jpg");
+  background: url("https://likworld.gitee.io/openimage/background/background.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: 50% 50%;

@@ -86,19 +86,19 @@
 <meta property="og:site_name" content="lk&#39;logs">
 <meta property="og:description" content="本文总结于《垃圾回收的算法与实现》,如想购买，请点击京东购物地址">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://likworld.gitee.io/openiamge/GC/GClogo.jpg">
-<meta property="og:image" content="https://likworld.gitee.io/openiamge/GC/HotSpot.png">
-<meta property="og:image" content="https://likworld.gitee.io/openiamge/GC/Serial-SerialOld.jpg">
-<meta property="og:image" content="https://likworld.gitee.io/openiamge/GC/ParNew-SerialOld.jpg">
-<meta property="og:image" content="https://likworld.gitee.io/openiamge/GC/Serial-SerialOld.jpg">
-<meta property="og:image" content="https://likworld.gitee.io/openiamge/GC/ParallelScavengc-ParallelOld.jpg">
-<meta property="og:image" content="https://likworld.gitee.io/openiamge/GC/ConcurrentMarkSweep.jpg">
-<meta property="og:image" content="https://likworld.gitee.io/openiamge/GC/G1.jpg">
-<meta property="og:updated_time" content="2019-05-15T06:15:26.014Z">
+<meta property="og:image" content="https://likworld.gitee.io/openimage/GC/GClogo.jpg">
+<meta property="og:image" content="https://likworld.gitee.io/openimage/GC/HotSpot.png">
+<meta property="og:image" content="https://likworld.gitee.io/openimage/GC/Serial-SerialOld.jpg">
+<meta property="og:image" content="https://likworld.gitee.io/openimage/GC/ParNew-SerialOld.jpg">
+<meta property="og:image" content="https://likworld.gitee.io/openimage/GC/Serial-SerialOld.jpg">
+<meta property="og:image" content="https://likworld.gitee.io/openimage/GC/ParallelScavengc-ParallelOld.jpg">
+<meta property="og:image" content="https://likworld.gitee.io/openimage/GC/ConcurrentMarkSweep.jpg">
+<meta property="og:image" content="https://likworld.gitee.io/openimage/GC/G1.jpg">
+<meta property="og:updated_time" content="2019-05-15T09:01:30.582Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GC收集器">
 <meta name="twitter:description" content="本文总结于《垃圾回收的算法与实现》,如想购买，请点击京东购物地址">
-<meta name="twitter:image" content="https://likworld.gitee.io/openiamge/GC/GClogo.jpg">
+<meta name="twitter:image" content="https://likworld.gitee.io/openimage/GC/GClogo.jpg">
 
 
 
@@ -351,8 +351,8 @@
       
 
       
-        <p><img src="https://likworld.gitee.io/openiamge/GC/GClogo.jpg" alt><br>本文总结于《垃圾回收的算法与实现》,如想购买，请点击<a href="https://item.jd.com/12010270.html" target="_blank" rel="noopener">京东购物地址</a><br><a id="more"></a></p>
-<h2 id="HotSpot虚拟机的垃圾收集器"><a href="#HotSpot虚拟机的垃圾收集器" class="headerlink" title="HotSpot虚拟机的垃圾收集器"></a>HotSpot虚拟机的垃圾收集器</h2><p><img src="https://likworld.gitee.io/openiamge/GC/HotSpot.png" alt></p>
+        <p><img src="https://likworld.gitee.io/openimage/GC/GClogo.jpg" alt><br>本文总结于《垃圾回收的算法与实现》,如想购买，请点击<a href="https://item.jd.com/12010270.html" target="_blank" rel="noopener">京东购物地址</a><br><a id="more"></a></p>
+<h2 id="HotSpot虚拟机的垃圾收集器"><a href="#HotSpot虚拟机的垃圾收集器" class="headerlink" title="HotSpot虚拟机的垃圾收集器"></a>HotSpot虚拟机的垃圾收集器</h2><p><img src="https://likworld.gitee.io/openimage/GC/HotSpot.png" alt></p>
 <h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><blockquote>
 <ul>
 <li>Stop The World：虚拟机自动发起自动完成，把用户正常工作的线程全部停掉。  </li>
@@ -363,9 +363,9 @@
 </ul>
 </blockquote>
 <h2 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h2><p>简介：单线程收集器(暂停其他所有工作线程，直到收集完毕)<br>用处：Client模式下的默认新生代收集器。<br>优点：简单而高效，对于单CPU环境而言有着最高的单线程收集效率。<br>参数:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-XX:SurvivorRatio</span><br><span class="line">-XX:PretenureSizeThreshold</span><br><span class="line">-XX:HandlePromotionFailure</span><br></pre></td></tr></table></figure></p>
-<p>Serial/Serial Old收集器的运行过程<br><img src="https://likworld.gitee.io/openiamge/GC/Serial-SerialOld.jpg" alt></p>
+<p>Serial/Serial Old收集器的运行过程<br><img src="https://likworld.gitee.io/openimage/GC/Serial-SerialOld.jpg" alt></p>
 <h2 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h2><p>简介：Serial收集器的多线程版本；调试、收集算法、Stop The World、对象分配规则、回收策略都与Serial收集器完全一样。<br>参数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-XX:SurvivorRatio</span><br><span class="line">-XX:PretenureSizeThreshold</span><br><span class="line">-XX:HandlePromotionFailure</span><br><span class="line">-XX:+UseConcMarkSweepGC 选项后的默认新生代收集器</span><br><span class="line">-XX:+UseParNewGC 强制指定</span><br><span class="line">-XX:ParallelGCThreads 限制垃圾回收的线程数</span><br></pre></td></tr></table></figure></p>
-<p>用途：Server模式下的虚拟机中首选的新生代收集器<br>优点：对于GC时系统资源的有效利用还是很有好处的，默认开启的收集线程数与CPU数量相同；<br>ParNew/Serial Old 收集器运行示意图<br><img src="https://likworld.gitee.io/openiamge/GC/ParNew-SerialOld.jpg" alt></p>
+<p>用途：Server模式下的虚拟机中首选的新生代收集器<br>优点：对于GC时系统资源的有效利用还是很有好处的，默认开启的收集线程数与CPU数量相同；<br>ParNew/Serial Old 收集器运行示意图<br><img src="https://likworld.gitee.io/openimage/GC/ParNew-SerialOld.jpg" alt></p>
 <h2 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h2><p>简介：新生代收集器，使用复制算法，并行的多线程收集器<br>优点：达到一个可控制的吞吐量(Throughput)，高效利用CPU时间<br>用途：后台运算而不需要太多交互的任务<br>参数：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-XX:MaxGCPauseMillis 控制最大垃圾收集器停顿时间 &gt;<span class="number">0</span> 单位/毫秒</span><br><span class="line">-XX:GCTimeRatio 设置吞吐量大小 <span class="number">0</span>&lt;值x&lt;<span class="number">100</span> 最大GC时间：<span class="number">1</span>/(<span class="number">1</span>+x)</span><br><span class="line">-XX:+UseAdaptiveSizePolicy 开关参数 不需要手工指定新生代、Eden与Survivor区的比例(-XX:SurvivorRatio)、晋升老年代对象的年龄(-XX:PretenureSizeThreshold)等细节参数</span><br></pre></td></tr></table></figure></p>
 <h2 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h2><p>简介：老年代收集器，单线程收集器，标记-整理算法<br>用途：  </p>
 <ul>
@@ -376,8 +376,8 @@
 </ul>
 </li>
 </ul>
-<p>Serial/Serial Old 收集器运行示意图<br><img src="https://likworld.gitee.io/openiamge/GC/Serial-SerialOld.jpg" alt>  </p>
-<h2 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h2><p>简介：是Parallel Scavenge收集器的老年代版本，多线程，标记-整理算法，JDK1.6开始提供<br>Parallel Scavcnge/Parallel Old 收集器运行示意图<br><img src="https://likworld.gitee.io/openiamge/GC/ParallelScavengc-ParallelOld.jpg" alt></p>
+<p>Serial/Serial Old 收集器运行示意图<br><img src="https://likworld.gitee.io/openimage/GC/Serial-SerialOld.jpg" alt>  </p>
+<h2 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h2><p>简介：是Parallel Scavenge收集器的老年代版本，多线程，标记-整理算法，JDK1.6开始提供<br>Parallel Scavcnge/Parallel Old 收集器运行示意图<br><img src="https://likworld.gitee.io/openimage/GC/ParallelScavengc-ParallelOld.jpg" alt></p>
 <h2 id="CMS-收集器"><a href="#CMS-收集器" class="headerlink" title="CMS 收集器"></a>CMS 收集器</h2><p>简介：获取最短回收停顿时间为目标的收集器。标记-清除算法<br>过程：</p>
 <ul>
 <li>初始标记(CMS initial mark)<ul>
@@ -415,7 +415,7 @@
 </ul>
 </li>
 </ul>
-<p>Concurrent Mark Sweep 收集器运行示意图<br><img src="https://likworld.gitee.io/openiamge/GC/ConcurrentMarkSweep.jpg" alt></p>
+<p>Concurrent Mark Sweep 收集器运行示意图<br><img src="https://likworld.gitee.io/openimage/GC/ConcurrentMarkSweep.jpg" alt></p>
 <h2 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h2><p>简介：是一款面向服务端应用的垃圾收集器，标记-整理。<br>优点:</p>
 <ul>
 <li>并行与并发：使用多个CPU(CPU或者CPU核心)缩短Stop The Wrold停顿时间，并发的方式让java程序继续执行。</li>
@@ -443,7 +443,7 @@
 </ul>
 </li>
 </ul>
-<p>G1收集器运行示意图<br><img src="https://likworld.gitee.io/openiamge/GC/G1.jpg" alt></p>
+<p>G1收集器运行示意图<br><img src="https://likworld.gitee.io/openimage/GC/G1.jpg" alt></p>
 
       
     </div>
@@ -465,7 +465,7 @@
   <p><span>本文标题:</span>GC收集器</p>
   <p><span>文章作者:</span>江湖小郎中</p>
   <!--<p><span>发布时间:</span>2019年05月15日 - 10:16:51</p>
-  <p><span>最后更新:</span>2019年05月15日 - 14:15:26</p>-->
+  <p><span>最后更新:</span>2019年05月15日 - 17:01:30</p>-->
   <p><span>原始链接:</span><a href="/blog/GC收集器.html" title="GC收集器">http://www.lklogs.com/blog/GC收集器.html</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://www.lklogs.com/blog/GC收集器.html" aria-label="复制成功！"></i></span>
   </p>
