@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>lk&#39;logs</title>
   
-  <subtitle>www.lklogs.com</subtitle>
+  
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.lklogs.com/"/>
-  <updated>2019-05-17T01:54:21.908Z</updated>
+  <updated>2019-05-17T13:34:41.407Z</updated>
   <id>http://www.lklogs.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GC标记-清除算法</title>
+    <link href="http://www.lklogs.com//blog/GC%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95.html"/>
+    <id>http://www.lklogs.com//blog/GC标记-清除算法.html</id>
+    <published>2019-05-17T09:22:49.000Z</published>
+    <updated>2019-05-17T13:34:41.407Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>本文介绍GC标记-清除算法的过程以及相关需要注意到的细节点<br><a id="more"></a></p><h2 id="标记和清除"><a href="#标记和清除" class="headerlink" title="标记和清除"></a>标记和清除</h2><ul><li>标记(遍历对象并标记)<br>简介：所有活动对象做标记的阶段；  <ul><li>首先要标记通过根直接引用的对象，然后递归地标记通过指针数组能访问到的对象</li><li>避免重复标记，程序在对象头进行置位操作，例如：obj.mark为真，已标记；obj.mark为假，未标记</li><li>在标记阶段，程序会标记所以活动对象，标记花费时间与“活动对象的总数”成正比</li><li>大多数情况下会使用深度优先搜索，缘由：深度优先搜索比广度优先搜索更能压低内存使用量</li></ul></li><li>清除：非活动对象回收阶段；<ul><li>会在堆从头到尾遍历,设置其中对象的标志位(活动对象) 将obj.mark == ture变更为obj.mark = false,便于下次标记，而obj.mark == false(也就是未标记的)存储起来便于清除</li><li>回收对象：把对象作为分块，连接到被称为“空闲链表”的单向链表；以便之后分块，“分配”可以遍历“空闲链表”</li><li>GC重写对象的域，</li><li>花费时间与堆大小成正比  <h2 id="分配"><a href="#分配" class="headerlink" title="分配"></a>分配</h2>mutator申请分块时情况：</li></ul></li><li>找到大小相同的分块直接返回</li><li>找到比申请大的分块，分割，去掉剩余，返回相同大小的分块</li><li>没有找到相同的分块，返回null,分配停止<h3 id="First-fit、Best-fit、Worst-fit-分配策略"><a href="#First-fit、Best-fit、Worst-fit-分配策略" class="headerlink" title="First-fit、Best-fit、Worst-fit 分配策略"></a>First-fit、Best-fit、Worst-fit 分配策略</h3></li><li>First-fit：发现大小等于mutator申请大小立即返回</li><li>Best-fit：遍历空闲链表，返回大于等于mutator申请大小的最小分块</li><li>Worst-fit：找出空闲链表中最大的分块，分割成mutator申请大小和分割后剩余的大小，目的将分割块最大化<h2 id="合并-连接连续分块"><a href="#合并-连接连续分块" class="headerlink" title="合并(连接连续分块)"></a>合并(连接连续分块)</h2>缘由：根据分配策略的不同可能会产生大量的小分块<br>场景：合并是在清除阶段进行的<blockquote><p>发现分块，判断分块是否连续，连续合并整理成一个分块</p></blockquote><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2></li><li>实现简单(算法简单)</li><li>与保守式GC算法兼容(保守式GC算法中，对象是不能移动的)<ul><li>GC标记-清除算法不会移动对象<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2></li></ul></li><li>碎片化(fragmentation)<ul><li>在使用过程中会逐渐产生被细化的分块，不久后就会导致无数的小分块散步在堆的各处</li><li>会增加mutator的执行负担</li><li>把具有引用关系的对象安排在堆中较远的位置，就会增加访问所需要的时间</li></ul></li><li>分配速度<ul><li>每次都必须遍历空闲链表，找到足够大的分块，最大时间复杂度</li></ul></li><li>写时复制技术(copy-on-write)<blockquote><p>liunx等众多UNIX操作系统的虚拟存储中用到的高速化方法；<br>而写时复制技术实际上是将内存空间共享；因为数据一致性的缘故不能直接重写共享内存；重写时，需要复制自己私有空间的数据，对这个私有空间进行重写，复制后只访问这个私有空间，不访问共享内存；此过程叫做在写入时进行复制<br>不兼容的原因：GC标记-清除算法即使没有重写对象，GC也会设置所有活动对象的标志位，会导致频繁发生不必要的复制，压迫内存空间<br>** 与之技术不兼容，因为GC设置所有活动对象的标志位，会频繁发生本不应该发生的复制，压迫内存空间，处理方式：位图标记(bitmap marking)</p></blockquote><h2 id="多个空闲链表"><a href="#多个空闲链表" class="headerlink" title="多个空闲链表"></a>多个空闲链表</h2><blockquote><p>设置上限空闲链表，按需找到指定大小分块的空闲链表，可以调高效率，但是也不能过多，否则会对内存空间造成浪费</p></blockquote><h2 id="BiBOP法-将大小相近的对象整理成固定大小的块进行管理的方法"><a href="#BiBOP法-将大小相近的对象整理成固定大小的块进行管理的方法" class="headerlink" title="BiBOP法(将大小相近的对象整理成固定大小的块进行管理的方法)"></a>BiBOP法(将大小相近的对象整理成固定大小的块进行管理的方法)</h2>缺点：如果多个块中分散残留着同样大小的对象，反而会降低堆使用效率<h2 id="位图标记-收集各个对象的标志位并表格化，不在对象的头里置位，在表格中的特定场所置位"><a href="#位图标记-收集各个对象的标志位并表格化，不在对象的头里置位，在表格中的特定场所置位" class="headerlink" title="位图标记(收集各个对象的标志位并表格化，不在对象的头里置位，在表格中的特定场所置位)"></a>位图标记(收集各个对象的标志位并表格化，不在对象的头里置位，在表格中的特定场所置位)</h2>实现方式：散列表，树形结构等<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3></li><li>与写时复制技术兼容</li><li>清除操作更加高效(避免多次遍历，有效的取消位)</li><li>多个堆需要每一个都准备一个位图表格(通过对象的地址求其对应的标志位的位置，进行位运算)</li></ul></body></html>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文介绍GC标记-清除算法的过程以及相关需要注意到的细节点&lt;br&gt;
+    
+    </summary>
+    
+      <category term="GC笔记" scheme="http://www.lklogs.com/categories/GC%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="GC" scheme="http://www.lklogs.com/tags/GC/"/>
+    
+  </entry>
   
   <entry>
     <title>GC需知</title>
