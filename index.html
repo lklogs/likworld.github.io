@@ -336,7 +336,7 @@
                   <span class="post-meta-item-text">字数统计:</span>
                 
                 <span title="字数统计">
-                  461
+                  484
                 </span>
               
 
@@ -374,22 +374,17 @@
 
       
         
-          
-            <meta name="generator" content="Hexo 3.8.0"><h2 id="java-线程有哪些状态，分别代表什么含义？"><a href="#java-线程有哪些状态，分别代表什么含义？" class="headerlink" title="java 线程有哪些状态，分别代表什么含义？"></a>java 线程有哪些状态，分别代表什么含义？</h2><p>在源码中找到Thread.state 枚举类型中有线程的状态<br>分别有：</p>
-<ul>
-<li>NEW<br>Thread state for a thread which has not yet started.<br>尚未启动的线程的线程状态.</li>
-<li>RUNNABLE<br>Thread state for a runnable thread.  A thread in the runnable state is executing in the Java virtual machine but it maybe waiting for other resources from the operating system such as processor.<br>可运行线程的线程状态。 处于可运行状态的线程正在Java虚拟机中执行，但它可能正在等待来自操作系统的其他资源，例如处理器。</li>
-<li>BLOCKED<br>Thread state for a waiting thread. A thread in the waiting state is waiting for another thread to perform a particular action.<br>等待线程的线程状态.处于等待状态的线程正在等待另一个线程执行特定操作。</li>
-<li>TIMED_WAITING<br>Thread state for a waiting thread with a specified waiting time. A thread is in the timed waiting state due to calling one of<br>具有指定等待时间的等待线程的线程状态。由于调用其中一个线程，线程处于定时等待状态</li>
-<li>TERMINATED<br>Thread state for a terminated thread. The thread has completed execution.<br>终止线程的线程状态。 线程已完成执行。<h2 id="如何获取当前JVM所有的线程状态？"><a href="#如何获取当前JVM所有的线程状态？" class="headerlink" title="如何获取当前JVM所有的线程状态？"></a>如何获取当前JVM所有的线程状态？</h2>命令实现：<br>jps 查看java线程pid<br>jstack [pid]<br>代码实现：<br>使用JMX<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.management.ManagementFactory;</span><br><span class="line"><span class="keyword">import</span> java.lang.management.ThreadInfo;</span><br><span class="line"><span class="keyword">import</span> java.lang.management.ThreadMXBean;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 获取JVM所有的线程状态</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AllThreadStackQuestion</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> void main(<span class="type">String</span>[] args) {</span><br><span class="line">        <span class="type">ThreadMXBean</span> threadMXBean = <span class="type">ManagementFactory</span>.getThreadMXBean();</span><br><span class="line">        long[] allThreadIds = threadMXBean.getAllThreadIds();</span><br><span class="line">        <span class="keyword">for</span> (long threadid : allThreadIds) {</span><br><span class="line">            <span class="type">ThreadInfo</span> threadInfo = threadMXBean.getThreadInfo(threadid);</span><br><span class="line">            <span class="type">System</span>.out.<span class="built_in">println</span>(threadInfo.<span class="built_in">toString</span>());</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-</li>
-</ul>
-<h2 id="如何获取线程的资源消费情况？"><a href="#如何获取线程的资源消费情况？" class="headerlink" title="如何获取线程的资源消费情况？"></a>如何获取线程的资源消费情况？</h2><p>JMX的拓展实现<br></p><figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.sun.management.ThreadMXBean;</span><br><span class="line"><span class="keyword">import</span> java.lang.management.ManagementFactory;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 获取线程的消费情况</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AllThreadInfoQuestion</span> {</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">        ThreadMXBean threadMXBean = (ThreadMXBean) ManagementFactory.getThreadMXBean();</span><br><span class="line">        <span class="keyword">long</span>[] allThreadIds = threadMXBean.getAllThreadIds();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">long</span> threadid : allThreadIds) {</span><br><span class="line">            <span class="keyword">long</span> threadAllocatedBytes = threadMXBean.getThreadAllocatedBytes(threadid);</span><br><span class="line">            <span class="keyword">long</span> kBytes = threadAllocatedBytes / <span class="number">1024</span>;</span><br><span class="line">            System.out.<span class="built_in">printf</span>(<span class="string">"线程[ID: %d] 分配内存： %s KB \n"</span>, threadid, kBytes);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><p></p>
-
-          
+          <p>主要有三个问题：线程状态，代码实现以及线程资源情况<br>
+          <!--noindex-->
+          </p><div class="post-button text-center">
+            <a class="btn" href="/blog/线程状态.html#more" rel="contents">
+              阅读全文 »
+            </a>
+          </div>
+          <!--/noindex-->
         
       
-    </div>
+    <p></p></div>
     
     
     
