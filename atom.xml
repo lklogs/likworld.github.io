@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.lklogs.com/"/>
-  <updated>2020-05-20T04:05:54.864Z</updated>
+  <updated>2020-05-20T04:25:17.593Z</updated>
   <id>http://www.lklogs.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>G1问题</title>
+    <link href="http://www.lklogs.com//blog/G1%E9%97%AE%E9%A2%98.html"/>
+    <id>http://www.lklogs.com//blog/G1问题.html</id>
+    <published>2020-05-20T04:20:10.000Z</published>
+    <updated>2020-05-20T04:25:17.593Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>本文简单阐述G1中的跨代指针、用户线程和收集线程的隔离性、以及可停顿模型的建立基础</p><a id="more"></a><p><strong>将Java堆分成多个独立Region后，Region里面存在的跨Region引用对象如何解决？</strong></p><p>使用记忆集避免全堆作为GC Roots扫描，但在G1收集器上记忆集的应用其实要复杂很多，它的每个Region都维护有自己的记忆集，这些记忆集会记录下别的Region指向自己的指针，并标记这些指针分别在哪些卡页的范围之内。G1的记忆集在存储结构的本质上是一种哈希表，Key是别的Region的起始地址，Value是一个集合，里面存储的元素是卡表的索引号。这种“双向”的卡表结构（卡表是“我指向谁”，这种结构还记录了“谁指向我”）比原来的卡表实现起来更复杂，同时由于Region数量比传统收集器的分代数量明显要多得多，因此G1收集器要比其他的传统垃圾收集器有着更高的内存占用负担。根据经验，G1至少要耗费大约相当于Java堆容量10%至20%的额外内存来维持收集器工作。</p><p><strong>在并发标记阶段如何保证收集线程与用户线程互不干扰地运行？</strong></p><p>这里首先要解决的是用户线程改变对象引用关系时，必须保证其不能打破原本的对象图结构，导致标记结果出现错误，该问题的解决办法笔者已经抽出独立小节来讲解过（见3.4.6节）：CMS收集器采用增量更新算法实现，而G1收集器则是通过原始快照（SATB）算法来实现的。此外，垃圾收集对用户线程的影响还体现在回收过程中新创建对象的内存分配上，程序要继续运行就肯定会持续有新对象被创建，G1为每一个Region设计了两个名为TAMS（Top at Mark Start）的指针，把Region中的一部分空间划分出来用于并发回收过程中的新对象分配，并发回收时新分配的对象地址都必须要在这两个指针位置以上。G1收集器默认在这个地址以上的对象是被隐式标记过的，即默认它们是存活的，不纳入回收范围。与CMS中的“Concurrent Mode Failure”失败会导致Full GC类似，如果内存回收的速度赶不上内存分配的速度，G1收集器也要被迫冻结用户线程执行，导致FullGC而产生长时间“Stop The World”。  </p><p><strong>怎样建立起可靠的停顿预测模型？</strong></p><p>用户通过-XX：MaxGCPauseMillis参数指定的停顿时间只意味着垃圾收集发生之前的期望值，</p><p><strong>但G1收集器要怎么做才能满足用户的期望呢？</strong></p><p>G1收集器的停顿预测模型是以<strong>衰减均值（Decaying Average）</strong>为理论基础来实现的，在垃圾收集过程中，G1收集器会记录每个Region的回收耗时、每个Region记忆集里的脏卡数量等各个可测量的步骤花费的成本，并分析得出平均值、标准偏差、置信度等统计信息。这里强调的“衰减平均值”是指它会比普通的平均值更容易受到新数据的影响，平均值代表整体平均状态，但衰减平均值更准确地代表“最近的”平均状态。换句话说，Region的统计状态越新越能决定其回收的价值。然后通过这些信息预测现在开始回收的话，由哪些Region组成回收集才可以在不超过期望停顿时间的约束下获得最高的收益。</p></body></html>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文简单阐述G1中的跨代指针、用户线程和收集线程的隔离性、以及可停顿模型的建立基础&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="GC笔记" scheme="http://www.lklogs.com/categories/GC%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="GC" scheme="http://www.lklogs.com/tags/GC/"/>
+    
+  </entry>
   
   <entry>
     <title>GC参数总结</title>
