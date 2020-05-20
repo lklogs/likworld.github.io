@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.lklogs.com/"/>
-  <updated>2020-01-15T14:22:14.161Z</updated>
+  <updated>2020-05-20T04:05:54.864Z</updated>
   <id>http://www.lklogs.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GC参数总结</title>
+    <link href="http://www.lklogs.com//blog/%E5%B8%B8%E7%94%A8%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8.html"/>
+    <id>http://www.lklogs.com//blog/常用垃圾收集器.html</id>
+    <published>2020-05-19T03:36:06.000Z</published>
+    <updated>2020-05-20T04:05:54.864Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>本文简单总结一些常用的GC参数，以及最新版本的JDK添加的参数，持续更新中<br><a id="more"></a></p><ul><li>-Xms：堆的最小值</li><li>-Xmx：堆的最大值</li><li>-Xmn：新生代的大小</li><li>-Xss：减少栈内存的容量</li><li>-XX:+PrintCommandLineFlags:默认命令行参数</li><li>-XX:InitialHeapSize：起始堆大小</li><li>-XX:MaxHeapSize：最大堆大小</li><li>-XX:+UseCompressedClassPointers：使用压缩指针</li><li>-XX:+UseCompressedOops：使用普通对象指针压缩</li><li>-XX:BiasedLockingStartupDelay=0:偏向锁延迟为0，默认为4</li><li>-XX:+UnlockDiagnosticVMOptions:解锁检测的参数</li><li>-XX:PrintAssembly:打印汇编代码</li><li>-XX:SurvivorRatio：Eden与Survivor区的比例</li><li>-XX:+HeapDumpOnOutOfMemoryError：可以让虚拟机在出现内存溢出异常的时候Dump出当前内存堆转储快照以便进行事后分析</li><li>-XX:MaxPermSize/-XX:MaxMetaspaceSize：设置元空间最大值，默认是-1，即不限制，或者说只受限于本地内存大小</li><li>-XX:MetaspaceSize：指定元空间的初始化空间大小，以字节为单位，达到该值就会触发垃圾回收进行类型卸载，同时收集器会对该值进行调整：如果释放了大量的空间，就适当降低该值；如果释放了很少的空间，那么在不超过-XX:MaxMetaspaceSize(如果设置了的话)的情况下，适当提高该值。</li><li>-XX:MinMetaspaceFreeRatio：作用是在垃圾收集之后控制最小的元空间剩余容量的百分比，可减少因为元空间不足导致的垃圾收集的频率，类似的还有-XX:MaxMetaspaceFreeRatio，用于控制最大的元空间剩余容量的百分比</li><li>-XX:MaxDirectMemorySize：直接内存（Direct Memory）的容量大小</li><li>-XX:PretenureSizeThreshold：晋升老年代对象大小</li><li>-XX:MaxTenuringThreshold：设置晋升老年代的年龄阈值</li><li>-Xnoclassgc：对类型进行回收</li><li>-XX:UseCondCardMark：在jdk7之后，HotSpot虚拟机增加了一个新的参数-XX:+UseCondCardMark，用来决定是否开启卡表更新的条件判断。开启会增加一次额外判断的开销，但能够避免伪共享问题，两者各有性能损耗，是否打开要根据应用实际运行情况来进行测试权衡。</li><li>-XX:ParallelGCThreads：限制垃圾收集的线程数</li><li>-XX:MaxGCPauseMillis：控制最大垃圾收集停顿时间</li><li>-XX:GCTimeRatio：设置吞吐量大小</li><li>-XX:+UseAdaptiveSizePolicy：Parallel Scavenge收集器的开关参数，当这个参数被激活之后，就不需要人工指定新生代的大小（-Xmn）、Eden与Survivor区的比例（-XX:SurvivorRatio）、晋升老年代对象大小（-XX:PretenureSizeThreshold）等细节参数，虚拟机会根据当前系统的运行情况收集性能监控信息，动态调整这些参数以提供最合适的调节策略。</li><li>-Xlog[:[selector][:[output][:[decorators][:output-options]]]]</li><li>-XX:+PrintGC/-Xlog:gc:(JDK9)：查看GC基本信息</li><li>-XX:+PrintGCDetails/-Xlog:gc*(JDK9)：查看GC详细信息</li><li>-XX:PrintHeapAtGC/-Xlog:gc+heap=debug(JDK9)：查看GC前后的堆、方法区可用容量变化</li><li>-XX:+PrintGCApplicationConcurrentTime 和 -XX:+PrintGCApplicationStoppedTime/ -Xlog:safepoint(JDK9)：查看GC过程中用户线程并发时间以及停顿时间</li><li>-XX:+PrintAdaptiveSizePolicy/-Xlog:gc+ergo*=trace：查看收集器Ergonomics机制（自动设置堆空间各分代区域大小，收集目标等内容，从Parallel收集器开始支持）自动调节的相关信息。</li><li>-XX:+PrintTenuringDistribution/-Xlog:gc+age=trace：查看熬过收集后剩余对象的年龄分布信息</li><li>-XX:PretenureSizeThreshold：指定大于该设置值的对象直接在老年代分配，这样做的目的表面在Eden区以及两个Survivor区之间来回复制，产生大量的内存复制操作。</li><li>-XX:HandlePromotionFailure：设置值是否允许担保失败（Handle Promotion Failure）；如果允许，那会继续检查老年代最大可用的连续空间是否大于历次晋升老年代对象的平均大小，如果大于，将尝试进行一次Minor GC，尽管这次Minor GC是有风险的；如果小于，或者-XX:HandlePromotionFailure设置不允许冒险，那这时就要改为一次Full GC</li><li>-XX:-UseSplitVerifier：关闭字节码验证优化</li><li>-XX:+FailOverToOldVerifier：在类型验证失败的时候退回到旧的类型推导方式进行校验。</li></ul></body></html>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文简单总结一些常用的GC参数，以及最新版本的JDK添加的参数，持续更新中&lt;br&gt;
+    
+    </summary>
+    
+      <category term="GC笔记" scheme="http://www.lklogs.com/categories/GC%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="GC" scheme="http://www.lklogs.com/tags/GC/"/>
+    
+  </entry>
   
   <entry>
     <title>多线程问题总结</title>
@@ -150,8 +172,8 @@
   
   <entry>
     <title>GC收集器</title>
-    <link href="http://www.lklogs.com//blog/GC%E6%94%B6%E9%9B%86%E5%99%A8.html"/>
-    <id>http://www.lklogs.com//blog/GC收集器.html</id>
+    <link href="http://www.lklogs.com//blog/GC%E5%8F%82%E6%95%B0%E6%80%BB%E7%BB%93.html"/>
+    <id>http://www.lklogs.com//blog/GC参数总结.html</id>
     <published>2019-05-15T02:16:51.000Z</published>
     <updated>2019-05-15T09:01:30.582Z</updated>
     

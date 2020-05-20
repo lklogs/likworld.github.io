@@ -61,7 +61,7 @@
 
 
 
-  <meta name="keywords" content="java,">
+  <meta name="keywords" content="GC,">
 
 
 
@@ -74,18 +74,18 @@
 
 
 
-<meta name="description" content="主要有三个问题：线程状态，代码实现以及线程资源情况">
-<meta name="keywords" content="java">
+<meta name="description" content="本文简单总结一些常用的GC参数，以及最新版本的JDK添加的参数，持续更新中">
+<meta name="keywords" content="GC">
 <meta property="og:type" content="article">
-<meta property="og:title" content="线程状态">
-<meta property="og:url" content="http://www.lklogs.com/blog/线程状态.html">
+<meta property="og:title" content="GC参数总结">
+<meta property="og:url" content="http://www.lklogs.com/blog/常用垃圾收集器.html">
 <meta property="og:site_name" content="lk'logs">
-<meta property="og:description" content="主要有三个问题：线程状态，代码实现以及线程资源情况">
+<meta property="og:description" content="本文简单总结一些常用的GC参数，以及最新版本的JDK添加的参数，持续更新中">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-20T06:14:22.645Z">
+<meta property="og:updated_time" content="2020-05-20T04:05:54.864Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="线程状态">
-<meta name="twitter:description" content="主要有三个问题：线程状态，代码实现以及线程资源情况">
+<meta name="twitter:title" content="GC参数总结">
+<meta name="twitter:description" content="本文简单总结一些常用的GC参数，以及最新版本的JDK添加的参数，持续更新中">
 
 
 
@@ -115,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="http://www.lklogs.com/blog/线程状态.html">
+  <link rel="canonical" href="http://www.lklogs.com/blog/常用垃圾收集器.html">
 
 
 
 
 
-  <title>线程状态 | lk'logs</title>
+  <title>GC参数总结 | lk'logs</title>
   
 
 
@@ -255,7 +255,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.lklogs.com/blog/线程状态.html">
+    <link itemprop="mainEntityOfPage" href="http://www.lklogs.com/blog/常用垃圾收集器.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="江湖小郎中">
@@ -272,7 +272,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">线程状态</h1>
+          <h1 class="post-title" itemprop="name headline">GC参数总结</h1>
         
 
         <div class="post-meta">
@@ -284,8 +284,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-19T15:19:10+08:00">
-                2019-09-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-19T11:36:06+08:00">
+                2020-05-19
               </time>
             
 
@@ -307,8 +307,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面经/" itemprop="url" rel="index">
-                    <span itemprop="name">面经</span>
+                  <a href="/categories/GC笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">GC笔记</span>
                   </a>
                 </span>
 
@@ -338,7 +338,7 @@
                   <span class="post-meta-item-text">字数统计:</span>
                 
                 <span title="字数统计">
-                  484
+                  1k
                 </span>
               
 
@@ -354,7 +354,7 @@
                   <span class="post-meta-item-text">阅读时长 ≈</span>
                 
                 <span title="阅读时长">
-                  2
+                  3
                 </span>
               
             </div>
@@ -375,17 +375,46 @@
       
 
       
-        <meta name="generator" content="Hexo 3.8.0"><p>主要有三个问题：线程状态，代码实现以及线程资源情况<br><a id="more"></a></p>
-<h2 id="java-线程有哪些状态，分别代表什么含义？"><a href="#java-线程有哪些状态，分别代表什么含义？" class="headerlink" title="java 线程有哪些状态，分别代表什么含义？"></a>java 线程有哪些状态，分别代表什么含义？</h2><p>在源码中找到Thread.state 枚举类型中有线程的状态<br>分别有：</p>
+        <meta name="generator" content="Hexo 3.8.0"><p>本文简单总结一些常用的GC参数，以及最新版本的JDK添加的参数，持续更新中<br><a id="more"></a></p>
 <ul>
-<li>NEW<br>Thread state for a thread which has not yet started.<br>尚未启动的线程的线程状态.</li>
-<li>RUNNABLE<br>Thread state for a runnable thread.  A thread in the runnable state is executing in the Java virtual machine but it maybe waiting for other resources from the operating system such as processor.<br>可运行线程的线程状态。 处于可运行状态的线程正在Java虚拟机中执行，但它可能正在等待来自操作系统的其他资源，例如处理器。</li>
-<li>BLOCKED<br>Thread state for a waiting thread. A thread in the waiting state is waiting for another thread to perform a particular action.<br>等待线程的线程状态.处于等待状态的线程正在等待另一个线程执行特定操作。</li>
-<li>TIMED_WAITING<br>Thread state for a waiting thread with a specified waiting time. A thread is in the timed waiting state due to calling one of<br>具有指定等待时间的等待线程的线程状态。由于调用其中一个线程，线程处于定时等待状态</li>
-<li>TERMINATED<br>Thread state for a terminated thread. The thread has completed execution.<br>终止线程的线程状态。 线程已完成执行。<h2 id="如何获取当前JVM所有的线程状态？"><a href="#如何获取当前JVM所有的线程状态？" class="headerlink" title="如何获取当前JVM所有的线程状态？"></a>如何获取当前JVM所有的线程状态？</h2><h3 id="命令实现："><a href="#命令实现：" class="headerlink" title="命令实现："></a>命令实现：</h3>jps 查看java线程pid<br>jstack [pid]<h3 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a>代码实现：</h3>使用JMX<figure class="highlight swift"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.management.ManagementFactory;</span><br><span class="line"><span class="keyword">import</span> java.lang.management.ThreadInfo;</span><br><span class="line"><span class="keyword">import</span> java.lang.management.ThreadMXBean;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 获取JVM所有的线程状态</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AllThreadStackQuestion</span> </span>{</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> void main(<span class="type">String</span>[] args) {</span><br><span class="line">        <span class="type">ThreadMXBean</span> threadMXBean = <span class="type">ManagementFactory</span>.getThreadMXBean();</span><br><span class="line">        long[] allThreadIds = threadMXBean.getAllThreadIds();</span><br><span class="line">        <span class="keyword">for</span> (long threadid : allThreadIds) {</span><br><span class="line">            <span class="type">ThreadInfo</span> threadInfo = threadMXBean.getThreadInfo(threadid);</span><br><span class="line">            <span class="type">System</span>.out.<span class="built_in">println</span>(threadInfo.<span class="built_in">toString</span>());</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-</li>
+<li>-Xms：堆的最小值</li>
+<li>-Xmx：堆的最大值</li>
+<li>-Xmn：新生代的大小</li>
+<li>-Xss：减少栈内存的容量</li>
+<li>-XX:+PrintCommandLineFlags:默认命令行参数</li>
+<li>-XX:InitialHeapSize：起始堆大小</li>
+<li>-XX:MaxHeapSize：最大堆大小</li>
+<li>-XX:+UseCompressedClassPointers：使用压缩指针</li>
+<li>-XX:+UseCompressedOops：使用普通对象指针压缩</li>
+<li>-XX:BiasedLockingStartupDelay=0:偏向锁延迟为0，默认为4</li>
+<li>-XX:+UnlockDiagnosticVMOptions:解锁检测的参数</li>
+<li>-XX:PrintAssembly:打印汇编代码</li>
+<li>-XX:SurvivorRatio：Eden与Survivor区的比例</li>
+<li>-XX:+HeapDumpOnOutOfMemoryError：可以让虚拟机在出现内存溢出异常的时候Dump出当前内存堆转储快照以便进行事后分析</li>
+<li>-XX:MaxPermSize/-XX:MaxMetaspaceSize：设置元空间最大值，默认是-1，即不限制，或者说只受限于本地内存大小</li>
+<li>-XX:MetaspaceSize：指定元空间的初始化空间大小，以字节为单位，达到该值就会触发垃圾回收进行类型卸载，同时收集器会对该值进行调整：如果释放了大量的空间，就适当降低该值；如果释放了很少的空间，那么在不超过-XX:MaxMetaspaceSize(如果设置了的话)的情况下，适当提高该值。</li>
+<li>-XX:MinMetaspaceFreeRatio：作用是在垃圾收集之后控制最小的元空间剩余容量的百分比，可减少因为元空间不足导致的垃圾收集的频率，类似的还有-XX:MaxMetaspaceFreeRatio，用于控制最大的元空间剩余容量的百分比</li>
+<li>-XX:MaxDirectMemorySize：直接内存（Direct Memory）的容量大小</li>
+<li>-XX:PretenureSizeThreshold：晋升老年代对象大小</li>
+<li>-XX:MaxTenuringThreshold：设置晋升老年代的年龄阈值</li>
+<li>-Xnoclassgc：对类型进行回收</li>
+<li>-XX:UseCondCardMark：在jdk7之后，HotSpot虚拟机增加了一个新的参数-XX:+UseCondCardMark，用来决定是否开启卡表更新的条件判断。开启会增加一次额外判断的开销，但能够避免伪共享问题，两者各有性能损耗，是否打开要根据应用实际运行情况来进行测试权衡。</li>
+<li>-XX:ParallelGCThreads：限制垃圾收集的线程数</li>
+<li>-XX:MaxGCPauseMillis：控制最大垃圾收集停顿时间</li>
+<li>-XX:GCTimeRatio：设置吞吐量大小</li>
+<li>-XX:+UseAdaptiveSizePolicy：Parallel Scavenge收集器的开关参数，当这个参数被激活之后，就不需要人工指定新生代的大小（-Xmn）、Eden与Survivor区的比例（-XX:SurvivorRatio）、晋升老年代对象大小（-XX:PretenureSizeThreshold）等细节参数，虚拟机会根据当前系统的运行情况收集性能监控信息，动态调整这些参数以提供最合适的调节策略。</li>
+<li>-Xlog[:[selector][:[output][:[decorators][:output-options]]]]</li>
+<li>-XX:+PrintGC/-Xlog:gc:(JDK9)：查看GC基本信息</li>
+<li>-XX:+PrintGCDetails/-Xlog:gc*(JDK9)：查看GC详细信息</li>
+<li>-XX:PrintHeapAtGC/-Xlog:gc+heap=debug(JDK9)：查看GC前后的堆、方法区可用容量变化</li>
+<li>-XX:+PrintGCApplicationConcurrentTime 和 -XX:+PrintGCApplicationStoppedTime/ -Xlog:safepoint(JDK9)：查看GC过程中用户线程并发时间以及停顿时间</li>
+<li>-XX:+PrintAdaptiveSizePolicy/-Xlog:gc+ergo*=trace：查看收集器Ergonomics机制（自动设置堆空间各分代区域大小，收集目标等内容，从Parallel收集器开始支持）自动调节的相关信息。</li>
+<li>-XX:+PrintTenuringDistribution/-Xlog:gc+age=trace：查看熬过收集后剩余对象的年龄分布信息</li>
+<li>-XX:PretenureSizeThreshold：指定大于该设置值的对象直接在老年代分配，这样做的目的表面在Eden区以及两个Survivor区之间来回复制，产生大量的内存复制操作。</li>
+<li>-XX:HandlePromotionFailure：设置值是否允许担保失败（Handle Promotion Failure）；如果允许，那会继续检查老年代最大可用的连续空间是否大于历次晋升老年代对象的平均大小，如果大于，将尝试进行一次Minor GC，尽管这次Minor GC是有风险的；如果小于，或者-XX:HandlePromotionFailure设置不允许冒险，那这时就要改为一次Full GC</li>
+<li>-XX:-UseSplitVerifier：关闭字节码验证优化</li>
+<li>-XX:+FailOverToOldVerifier：在类型验证失败的时候退回到旧的类型推导方式进行校验。</li>
 </ul>
-<h2 id="如何获取线程的资源消费情况？"><a href="#如何获取线程的资源消费情况？" class="headerlink" title="如何获取线程的资源消费情况？"></a>如何获取线程的资源消费情况？</h2><p>JMX的拓展实现<br></p><figure class="highlight cpp"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.sun.management.ThreadMXBean;</span><br><span class="line"><span class="keyword">import</span> java.lang.management.ManagementFactory;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 获取线程的消费情况</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AllThreadInfoQuestion</span> {</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>{</span><br><span class="line">        ThreadMXBean threadMXBean = (ThreadMXBean) ManagementFactory.getThreadMXBean();</span><br><span class="line">        <span class="keyword">long</span>[] allThreadIds = threadMXBean.getAllThreadIds();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">long</span> threadid : allThreadIds) {</span><br><span class="line">            <span class="keyword">long</span> threadAllocatedBytes = threadMXBean.getThreadAllocatedBytes(threadid);</span><br><span class="line">            <span class="keyword">long</span> kBytes = threadAllocatedBytes / <span class="number">1024</span>;</span><br><span class="line">            System.out.<span class="built_in">printf</span>(<span class="string">"线程[ID: %d] 分配内存： %s KB \n"</span>, threadid, kBytes);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure><p></p>
 
       
     </div>
@@ -404,12 +433,12 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>线程状态</p>
+  <p><span>本文标题:</span>GC参数总结</p>
   <p><span>文章作者:</span>江湖小郎中</p>
-  <!--<p><span>发布时间:</span>2019年09月19日 - 15:19:10</p>
-  <p><span>最后更新:</span>2019年09月20日 - 14:14:22</p>-->
-  <p><span>原始链接:</span><a href="/blog/线程状态.html" title="线程状态">http://www.lklogs.com/blog/线程状态.html</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://www.lklogs.com/blog/线程状态.html" aria-label="复制成功！"></i></span>
+  <!--<p><span>发布时间:</span>2020年05月19日 - 11:36:06</p>
+  <p><span>最后更新:</span>2020年05月20日 - 12:05:54</p>-->
+  <p><span>原始链接:</span><a href="/blog/常用垃圾收集器.html" title="GC参数总结">http://www.lklogs.com/blog/常用垃圾收集器.html</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://www.lklogs.com/blog/常用垃圾收集器.html" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
 </div>
@@ -440,7 +469,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/GC/" rel="tag"># GC</a>
           
         </div>
       
@@ -453,8 +482,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/blog/常见函数相关.html" rel="next" title="常见函数相关">
-                <i class="fa fa-chevron-left"></i> 常见函数相关
+              <a href="/blog/多线程问题总结.html" rel="next" title="多线程问题总结">
+                <i class="fa fa-chevron-left"></i> 多线程问题总结
               </a>
             
           </div>
@@ -462,10 +491,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/blog/多线程问题总结.html" rel="prev" title="多线程问题总结">
-                多线程问题总结 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -560,17 +585,8 @@ var jiathis_config={
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -654,22 +670,6 @@ var jiathis_config={
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#java-线程有哪些状态，分别代表什么含义？"><span class="nav-number">1.</span> <span class="nav-text">java 线程有哪些状态，分别代表什么含义？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何获取当前JVM所有的线程状态？"><span class="nav-number">2.</span> <span class="nav-text">如何获取当前JVM所有的线程状态？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令实现："><span class="nav-number">2.1.</span> <span class="nav-text">命令实现：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现："><span class="nav-number">2.2.</span> <span class="nav-text">代码实现：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何获取线程的资源消费情况？"><span class="nav-number">3.</span> <span class="nav-text">如何获取线程的资源消费情况？</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
