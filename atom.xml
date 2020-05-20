@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.lklogs.com/"/>
-  <updated>2020-05-20T11:38:48.627Z</updated>
+  <updated>2020-05-20T13:17:58.181Z</updated>
   <id>http://www.lklogs.com/</id>
   
   <author>
@@ -15,6 +15,50 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CAS原子操作实现原理</title>
+    <link href="http://www.lklogs.com//blog/CAS%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86.html"/>
+    <id>http://www.lklogs.com//blog/CAS原子操作实现原理.html</id>
+    <published>2020-05-20T13:12:57.000Z</published>
+    <updated>2020-05-20T13:17:58.181Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>总结CAS存在的问题和相对应的CPU术语以及汇编层面的实现<br><a id="more"></a><br>CPU术语定义</p><table><thead><tr><th style="text-align:center">术语名称</th><th style="text-align:center">英文</th><th style="text-align:center">解释</th></tr></thead><tbody><tr><td style="text-align:center">缓存行</td><td style="text-align:center">Cache line</td><td style="text-align:center">缓存的最小操作单位</td></tr><tr><td style="text-align:center">比较并交换</td><td style="text-align:center">Compare and Swap</td><td style="text-align:center">CAS操作需要输入两个数值，一个旧值(期望操作前的值)和一个新值，在操作期间先比较旧值有没有变化，如果没有发生变化，才交换新值，发生了变化则不交换</td></tr><tr><td style="text-align:center">CPU流水线</td><td style="text-align:center">CPU pipeline</td><td style="text-align:center">CPU流水线的工作方式就像工业生产上的装配流水线，在CPU中由5-6个不同功能的电路单元组成一条指令处理流水线，然后将一条X86指令分成5-6步后再由这些电路单元分别执行，这样就能实现在一个CPU时钟周期完成一条指令，因此提高CPU的运算速度</td></tr><tr><td style="text-align:center">内存顺序冲突</td><td style="text-align:center">Memory order violation</td><td style="text-align:center">内存顺序冲突一般是由假共享引起的，假共享是指多个CPU同时修改一个缓存行的不同部分而引起其中一个CPU的操作无效，当出现这个内存顺序冲突时，CPU必须清空流水线</td></tr></tbody></table><p><strong>CAS有四个操作数，分别为：对象内存位置、对象中的变量的偏移量、变量预期值和新的值。</strong></p><p><strong>处理器如何实现原子操作</strong>：32位IA-32处理器使用基于<font color="red">对缓存加锁或总线加锁的方式</font>来实现多处理器之间的原子操作。</p><p><strong>CAS存在的问题</strong></p><ol><li>ABA问题</li><li>循环时间长开销大</li><li>只能保证一个共享变量的原子操作</li></ol><p><strong>ABA问题</strong></p><p>​    解决思路：在变量前面追加版本号每次变量更新的时候把版本号加1，那么A->B->C变成1A->2B-3A。java1.5开始Atomic包提供了一个类AtomicStampedReference来解决ABA问题，这个类的compareAndSet方法的作用是首先检查当前引用是否等于预期引用，并且检查当前标志是否等于预期标志，如果全部相等，则以原子方式将该引用和该标志的值设置为给定的更新值。</p><p><strong>循环时间长开销大</strong></p><p>​    自旋CAS如果长时间不成功，会给CPU带来非常大的执行开销。如果JVM能支持处理器提供的pause指令，那么效率会有一定的提升。</p><p>pause指令有两个作用：</p><ol><li>它可以延迟流水线执行指令（de-pipeline），使CPU不会消耗过多的执行资源，延迟的时间取决于具体实现的版本，在一些处理器上延迟时间是零</li><li>它可以避免在退出循环的时候因内存顺序冲突（Memory order violation）而引起CPU流水线被清空（CPU pipeline flush）,从而提高CPU的执行效率</li></ol><p><strong>只能保证一个共享变量的原子操作</strong></p><p>​    循环CAS的方式只能保证一个共享变量的原子性，对于多个共享变量操作时，循环CAS就无法保证操作的原子性，这个时候就可以用锁。</p><p><strong>使用锁机制实现原子操作</strong></p><p>​    锁机制保证了只有获得锁的线程才能够操作锁定的内存区域。JVM内部实现了很多种锁机制，有偏向锁、轻量级锁和互斥锁。除了偏向锁，JVM实现锁的方式都用了循环CAS，即当一个线程想进入同步块的时候使用循环CAS的方式来获取锁，当它退出同步块的时候使用循环CAS释放锁。</p><p>java中的CAS操作利用处理器提供的CMPXCHG（比较并交换）指令实现的。</p><font color="red">最终实现：</font><font color="red">如果是一个CPU使用cmpxchg 这条指令不能保证原子性，多个CPU需要加Lock;</font><br><font color="red">硬件：lock指令在执行后面指令的时候锁定一个北桥信号（不采用锁总线的方式）</font></body></html>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;总结CAS存在的问题和相对应的CPU术语以及汇编层面的实现&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Thread笔记" scheme="http://www.lklogs.com/categories/Thread%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="Thread" scheme="http://www.lklogs.com/tags/Thread/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>volatile基础介绍</title>
+    <link href="http://www.lklogs.com//blog/volatile%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D.html"/>
+    <id>http://www.lklogs.com//blog/volatile基础介绍.html</id>
+    <published>2020-05-20T12:58:55.000Z</published>
+    <updated>2020-05-20T13:01:13.182Z</updated>
+    
+    <content type="html"><![CDATA[<html><head></head><body><p>主要介绍volatile的具体实现（不同层面），以及底层的实现原理和相对应的CPU术语<br><a id="more"></a><br><strong>字节码层面</strong>：ACC_VOLATITLE</p><p><strong>JVM规范要求实现</strong></p><hr><p>StoreStoreBarrier  |         LoadLoadBarrier</p><p><em>volatile写操作</em>          |         <em>volatile读操作</em></p><p>StoreLoadBarrier   |         LoadStoreBarrier</p><hr><p><strong>HotSpot的实现 ：</strong> lock addl </p><p><strong>volatile具体作用：</strong></p><ol><li>保证共享变量的可见性</li><li>不保证共享变量的原子性</li><li>避免指令重排(内存屏障:禁止指令顺序颠倒)</li></ol><p><strong>volatile的应用：</strong>  </p><p>​    volatile是轻量级的synchronized，它在多线程处理器开发中保证了共享变量的可见性。  </p><p>​    可见性：当一个线程修改一个共享变量时，其他线程能读到这个修改的值。</p><p>​    volatile与synchronized相比优势  如果volatile变量修饰符使用恰当的话，它比synchronized的使用和执行成本更低，因为它不会引起线程上下文的切换和调度。</p><p><strong>volatile的定义与实现原理</strong>  </p><p>​    java语言规范第三版对volatile的定义如下：java编程语言允许线程访问共享变量，为了确保共享变量能被准确和一致的更新，线程应该确保通过排他锁单独获得这个变量。java语言提供了volatile，在某些情况下比锁要更加方便。如果一个字段被声明成volatile，java线程内存模型确保所有线程看到这个变量的值是一致的。</p><p><strong>实现原理相关的CPU术语</strong></p><table><thead><tr><th style="text-align:center">术语</th><th style="text-align:center">英文单词</th><th style="text-align:center">术语描述</th></tr></thead><tbody><tr><td style="text-align:center">内存屏障</td><td style="text-align:center">memory barriers</td><td style="text-align:center">是一组处理器指令，用于实现对内存操作的顺序限制</td></tr><tr><td style="text-align:center">缓存行</td><td style="text-align:center">cache line</td><td style="text-align:center">缓存中可以分配的最小存储单位。处理器填写缓存线时会加载整个缓存线，需要使用多个主内存读周期</td></tr><tr><td style="text-align:center">原子操作</td><td style="text-align:center">atomic operations</td><td style="text-align:center">不可中断的一个或一系列操作</td></tr><tr><td style="text-align:center">缓存行填充</td><td style="text-align:center">cache line fill</td><td style="text-align:center">当处理器识别到从内存中读取操作数是可缓存的，处理器读取整个缓存行到适当的缓存(L1、L2、L3的或所有)</td></tr><tr><td style="text-align:center">缓存命中</td><td style="text-align:center">cache hit</td><td style="text-align:center">如果进行高速缓存行填充操作的内存位置仍然是下次处理器访问的地址时，处理器从缓存行中读取操作数，而不是从内存读取</td></tr><tr><td style="text-align:center">写命中</td><td style="text-align:center">write hit</td><td style="text-align:center">当处理器将操作数写回到一个内存缓存的区域时，它首先会检查这个缓存的内存地址是否在缓存行中，如果存在一个有效的缓存行，则处理器将这个操作数写回到缓存中，而不是写回到内存，这个操作被称为写命中</td></tr><tr><td style="text-align:center">写缺失</td><td style="text-align:center">write misses the cache</td><td style="text-align:center">一个有效的缓存行被写入到不存在的内存区域</td></tr></tbody></table><p><strong>volatile是如何来保证可见性的？</strong></p><p>​    java代码如下：</p><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">instance = <span class="keyword">new</span> Singleton(); <span class="comment">// instance是volatile变量</span></span><br></pre></td></tr></tbody></table></figure><p>转变成汇编代码</p><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x01a3de1d</span>: movb $<span class="number">0x0</span>,<span class="number">0x1104800</span>;<span class="number">0x01a3de24</span>: lock add1 $<span class="number">0x0</span>,(%esp)</span><br></pre></td></tr></tbody></table></figure><p><strong>lock前缀的指令在多核处理器下会引发</strong></p><ol><li>将当前处理器缓存行的数据写回到系统内存</li><li>这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效</li></ol><p>为了提高处理器速度，处理器不直接和内存进行通信，而是先将系统内存的数据读到内部缓存(L1，L2或其他)后再进行操作，但操作完不知道何时会写回到内存。如果对声明了volatile的变量进行写操作，JVM就会向处理器发送一条Lock前缀的指令，将这个变量所在缓存行的数据写回到系统内存。但是就算写回到内存，如果其他处理器缓存的值还是旧的，再执行计算操作就会有问题。所以在多处理器下，为了保证各个处理器缓存是一致的，就会实现<strong>缓存一致性协议</strong>，每个处理器通过<strong>嗅探在总线上传播的数据</strong>来检查自己缓存的值是不是过期了，当处理器发现自己缓存行对应的内存地址被修改，就会将当前处理器的缓存行设置成无效状态，当处理器对这个数据进行修改操作的时候，会重新从系统内存中把数据读到处理器缓存里。</p><p><strong>Lock前缀指令会引起处理器缓存写到内存</strong></p><p>​    Lock前缀指令导致在执行期间，声言处理器的LOCK#信号。在多线程环境中，LOCK#信号确保在声言该信号期间，处理器可以独占任何共享内存。但是，在最近的处理器里，LOCK#信号一般不锁总线，而是锁缓存，毕竟锁总线开销的比较大。锁定操作对多线程缓存的影响？对于Intel486和Pentium处理器，在锁操作时，总是在总线上声言LOCK#信号。但在P6和目前的处理器中，如果访问的内存区域已经缓存在处理器内部，则不会声言LOCK#信号。相反，它会锁定这块内存区域的缓存并回写到内存，并使用缓存一致性机制来确保修改的原子性，此操作称为“缓存锁定”，缓存一致性机制会阻止同时修改由两个以上处理器缓存的内存区域数据。一个处理器的缓存回写到内存会导致其他处理器的缓存无效。  IA-32处理器和Intel64处理器使用<strong>MESI(修改、独占、共享、无效)控制协议</strong>去维护内部缓存和其他处理器缓存的一致性。在多核处理器系统中进行操作的时候，IA-32和Intel 64处理器能嗅探其他处理器访问系统内存和它们的内部缓存。处理器使用嗅探技术保证它的内部缓存、系统内存和其他处理器的缓存的数据在总线上保持一致。例如，在Pentium和P6 family处理器中，如果通过嗅探一个处理器来检测其他处理器打算写内存地址，而这个地址当前处于共享状态，那么正在嗅探的处理器将使它的缓存行无效，在下次访问相同内存地址时，强制执行缓存行填充。</p><p><strong>volatile的优化</strong></p><p>​    字节填充(追加到64字节的方式来填满高速缓存区的缓存行)</p></body></html>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要介绍volatile的具体实现（不同层面），以及底层的实现原理和相对应的CPU术语&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Thread笔记" scheme="http://www.lklogs.com/categories/Thread%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="Thread" scheme="http://www.lklogs.com/tags/Thread/"/>
+    
+  </entry>
   
   <entry>
     <title>GC Roots</title>
